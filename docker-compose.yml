@@ -3,19 +3,15 @@ version: "3"
 services:
   influxdb:
     image: influxdb:latest
-    container_name: influxdb
-    restart: always
-    networks: [metrics]
     ports:
       - "8086:8086"
     volumes:
-      - $HOME/docker/influxdb/data:/var/lib/influxdb
-      - $HOME/docker/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
-      - $HOME/docker/influxdb/init:/docker-entrypoint-initdb.d
+     - influxdb-storage:/var/lib/influxdb
     environment:
-      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME} # sourced from .env
-      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD} # sourced from .env
-      
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD}
+ 
   grafana:
     image: grafana/grafana:latest
     ports:
